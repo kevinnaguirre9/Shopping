@@ -18,4 +18,6 @@ class Product extends Model
     protected $primaryKey = 'id'; 
 
     protected $fillable = ['product_name', 'price', 'image_path'];
+
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 }
