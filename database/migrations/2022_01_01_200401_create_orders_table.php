@@ -19,6 +19,7 @@ class CreateOrdersTable extends Migration
             $table->timestamp('delivery_date')->nullable();
             $table->string('courier', 100);
             $table->string('tracking', 13);
+            $table->foreignId('status_id')->constrained('order_statuses')->onDelete('cascade');
             $table->decimal('total_price', 7, 2);
             $table->text('remarks');
             $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');

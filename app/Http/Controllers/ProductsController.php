@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
@@ -14,7 +15,8 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::latest()->paginate(10);
+        return view('products.index')->with('products', $products);
     }
 
     /**
@@ -24,7 +26,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -35,7 +37,27 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //die(var_dump($request->file()));
+        $request->validate([
+            'product_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        //Build image name
+        $file = $request->file('product_image');
+        $image_contents = file_get_contents($file);
+        $image_name = time() . '-' . preg_replace('/\s+/', '', $request->product_name) . '.' . $file->extension();
+        $img_bucket_path = 'images/' . $image_name;
+        $image_url = "https://" . env('AWS_BUCKET') .  ".s3" . env('AWS_DEFAULT_REGION') . ".amazonaws.com/" . $img_bucket_path;
+        //Store image
+        Storage::disk('s3')->put($img_bucket_path, $image_contents);
+
+        Product::create([
+            'product_name' => $request->input('product_name'),
+            'price' => $request->input('price'),
+            'image_path' => $image_url
+        ]);   
+
+        return redirect(route('products.index'));
     }
 
     /**

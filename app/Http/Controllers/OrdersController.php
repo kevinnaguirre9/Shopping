@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderStatus;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -14,7 +15,13 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::latest()->paginate(10);
+        $statuses = OrderStatus::all();
+        
+        return view('orders.index', [
+            'orders' => $orders,
+            'statuses' => $statuses
+        ]);
     }
 
     /**
@@ -69,7 +76,7 @@ class OrdersController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        //return respo
     }
 
     /**
