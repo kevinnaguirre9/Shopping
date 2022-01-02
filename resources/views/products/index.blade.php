@@ -45,13 +45,8 @@
                     </div> 
                </div> 
      
-               {{-- @if($users->render()->paginator->currentPage() <= $users->render()->paginator->lastPage()) --}}
-               <div class="d-flex">
-                    {{ $products->render() }}
-                    </div>
-               </div>
                <div class="card-footer">
-                    {{ date('Y-m-d H:i') }}
+                    {{ $products->render() }}
                </div>
              </div>
          </div>

@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class OrdersController extends Controller
 {
-
-    public function __construct() {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +16,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $orders = Order::latest()->paginate(10);
+        $orders = Order::latest()->paginate(6);
         $statuses = OrderStatus::all();
         
         return view('orders.index', [

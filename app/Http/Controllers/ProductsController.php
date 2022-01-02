@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
-
-    public function __construct() {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +15,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->paginate(10);
+        $products = Product::latest()->paginate(6);
         return view('products.index')->with('products', $products);
     }
 
