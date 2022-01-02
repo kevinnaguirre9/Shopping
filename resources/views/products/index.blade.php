@@ -29,11 +29,11 @@
                                              <td>{{ $product->product_name }}</td>
                                              <td>{{ $product->price }}</td>
                                              <td><a href="{{ route('products.edit', $product) }}" class="btn btn-warning btn-sm">edit</a></td>
-                                             {{--<td>
-                                                  {!! Form::open(['method' => 'PUT','route' => ['orders.update', $order],'style'=>'display:inline']) !!}
-                                                  {!! Form::submit('Complete order', ['class' => 'btn btn-success btn-sm']) !!}
+                                             <td>
+                                                  {!! Form::open(['method' => 'DELETE','route' => ['products.destroy', $product],'style'=>'display:inline']) !!}
+                                                  {!! Form::submit('delete', ['class' => 'btn btn-danger btn-sm']) !!}
                                                   {!! Form::close() !!}
-                                             </td> --}}
+                                             </td>
                                         </tr>   
                                    @empty
                                         {{-- <tr>
