@@ -18,17 +18,24 @@ class AuthController extends Controller
             $jwt = JwtAuth::generateToken($user);
             
             return [
-                'error' => false,
-                'data' => ['token' => $jwt]
+                'success' => true,
+                'data' => ['user' => $user, 'token' => $jwt]
             ];
         } else {
-            $error = true;
             $message = "Invalid Credentials";
 
             return [
-                'error' => $error, 
+                'success' => false,
                 'message' => $message
             ];
         }
+    }
+
+    public function logout() {
+        Auth::guard('api')->logout();
+
+        return [
+            'success' => true,
+        ];
     }
 }
