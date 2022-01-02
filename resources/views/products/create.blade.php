@@ -14,15 +14,15 @@
                          @csrf <!-- THIS IS ADDED IN ORDER TO PROTECT AGAINST CROSS-SITE REQUEST FORGERY-->
                          <div class="form-row">
                               <div class="form-group col-md-6">
-                                   <label for="product_name">Product name:</label>
-                                   <input type="text" class="form-control" name="product_name" id="product_name" required autofocus>
+                                   <label for="product_name">Product name</label>
+                                   <input type="text" class="form-control" name="product_name" id="product_name" autofocus required>
                               </div>
                               <div class="form-group col-md-6">
-                                   <label for="product_image">Product image:</label>
+                                   <label for="product_image">Product image</label>
                                    <input type="file" class="form-control" name="product_image" id="product_image" accept=".jpeg,.png,.jpg" required>
                               </div>
                               <div class="form-group col-md-6">
-                                   <label for="price">Price:</label>
+                                   <label for="price">Price</label>
                                    <input type="number" class="form-control" name="price" min="0.00" step="0.01" placeholder="E.g. 9.99" required/>
                               </div>
                          </div>

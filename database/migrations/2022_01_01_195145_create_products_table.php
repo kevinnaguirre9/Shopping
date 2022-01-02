@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->decimal('price', 7, 2);
             $table->string('image_path');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
