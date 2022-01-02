@@ -10,8 +10,13 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-//Orders route
-Route::resource('/orders', OrdersController::class)->except(['create', 'edit', 'store', 'destroy']);
+//Orders routes
+Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
+Route::get('/orders/{orderID}', [OrdersController::class, 'show'])->name('orders.show');
+Route::put('/orders/{orderID}', [OrdersController::class, 'update'])->name('orders.update');
+Route::delete('/orders/{orderID}', [OrdersController::class, 'destroy'])->name('orders.destroy');
+
+//Products routes
 Route::resource('/products', ProductsController::class);
 
 Auth::routes([

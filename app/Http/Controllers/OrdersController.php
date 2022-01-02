@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrdersController extends Controller
 {
-    
+
     public function __construct() {
         $this->middleware('auth');
     }
@@ -79,9 +80,22 @@ class OrdersController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, $id)
     {
-        //return respo
+        $order = Order::findOrfail($id);
+
+        /* $data['status_id'] = $request->input('status_id');
+        if($request->input('is_completed'))
+           $data['delivery_date'] = DB::raw('CURRENT_TIMESTAMP');
+ */
+        $order->update([
+            'status_id' => $request->input('status_id'),
+            'delivery_date' => $request->input('is_completed') ? DB::raw('CURRENT_TIMESTAMP') : null
+        ]);
+
+        return response()->json([
+            "redirectURL" => route('orders.index')
+        ]);
     }
 
     /**
