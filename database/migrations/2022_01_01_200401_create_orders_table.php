@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->timestamp('order_date')->useCurrent();
             $table->timestamp('delivery_date')->nullable();
             $table->string('courier', 100);
-            $table->string('tracking', 13);
+            $table->string('tracking', 20);
             $table->foreignId('status_id')->constrained('order_statuses');
             $table->decimal('total_price', 7, 2);
             $table->text('remarks');
