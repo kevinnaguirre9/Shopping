@@ -1,13 +1,17 @@
-@extends('layouts.app')
+@extends('layouts.login')
 
 @section('content')
-<div class="container">
+<div class="container ">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
 
-                <div class="card-body">
+            <div class="container">
+                <h1 style="color:#FF7800 ">
+                   <b>Registro de Usuario</b>
+                </h1>
+            </div>
+            <div class="card">
+                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
@@ -116,15 +120,32 @@
                                 @enderror
                             </div>
                         </div>
-
                         <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
+                            <div class="col-md-8 offset-md-5 mt-2">
+                               <button type="submit" class="btn btn-light" style="width: 200px; background-color: #FF7800 ; border: #FF7800 ; color: white">
+                                    {{ __('Registrar') }}
                                 </button>
-                            </div>
+
+                             </div>
                         </div>
-                    </form>
+                        <div class="row mb-0 mt-3">
+                            <div class="col-md-8 offset-md-5">
+                                @if (Route::has('password.request'))
+                                    <!--a class="btn btn-link" href="{{ route('password.request') }}">
+                                        {{ __('Forgot Your Password?') }}
+                                    </a-->
+                                @endif
+
+                                @if (Route::has('login'))
+                                    Ya tienes cuenta?
+                                    <a class="btn btn-link" href="{{ route('login') }}">{{ __('Inicia sesión') }}</a>
+                                
+                                @endif
+                                
+                           
+                            </div>
+
+                     </form>
                 </div>
             </div>
         </div>
