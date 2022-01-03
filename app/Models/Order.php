@@ -19,12 +19,20 @@ class Order extends Model
 
     protected $primaryKey = 'id';
 
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
+
     public function customer() {
-        return $this->belongsTo(User::class, 'customer_id');
+        return $this->belongsTo(OrderItems::class, 'order_id');
     }
 
     public function status() {
         return $this->belongsTo(OrderStatus::class, 'status_id');
+    }
+
+    public function items() {
+        //return $this->hasMany(OrderItems::class, 'order_id');
+        return $this->belongsToMany(Product::class, 'order_items')      //Return all ingredients 
+                    ->withTimestamps();
     }
 
 }

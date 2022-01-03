@@ -17,8 +17,6 @@ class CreateOrderItemsTable extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders');
             $table->foreignId('product_id')->constrained('products');
-            $table->decimal('price', 7, 2);
-            $table->tinyInteger('quantity');
             $table->timestamps();
             $table->softDeletes();
         });

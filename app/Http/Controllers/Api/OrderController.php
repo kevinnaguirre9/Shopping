@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -35,7 +40,32 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $order = Order::make([
+            'courier' => $request->input('courier'),
+            'remarks' => $request->input('remarks'),
+            'customer_id' => Auth::guard('api')->id(),
+            'status_id' => 1
+        ]);
+        $tracking = 'OR' . (hexdec(substr(uniqid(), 0, 9)) + (int) $order->id) . 'EC';  //create random tracking
+        $order->tracking = $tracking;
+
+        $productsId = explode(',', $request->input('products'));;
+        $products = DB::table('products')->whereIn('id', $productsId)->get();
+        $totalOrder = 0;
+
+        foreach ($products as $product) {
+            $totalOrder += $product->price;
+        }
+
+        $order->total_price = $totalOrder;
+        $order->save();     //save order
+
+        $order->items()->attach($productsId);   //save products
+
+        return [
+            'sucess' => true,
+            'message' => 'Order created successfully'
+        ];
     }
 
     /**
