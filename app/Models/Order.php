@@ -22,7 +22,7 @@ class Order extends Model
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
     public function customer() {
-        return $this->belongsTo(OrderItems::class, 'order_id');
+        return $this->belongsTo(User::class, 'customer_id');
     }
 
     public function status() {
