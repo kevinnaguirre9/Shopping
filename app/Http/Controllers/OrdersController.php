@@ -17,12 +17,23 @@ class OrdersController extends Controller
     public function index()
     {
         $orders = Order::latest()->paginate(6);
-        $statuses = OrderStatus::all();
         
-        return view('orders.index', [
-            'orders' => $orders,
-            'statuses' => $statuses
-        ]);
+        return view('orders.index')->with('orders', $orders);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $citizenCard = $request->input('citizen_card');
+        $ordersByCustomer = Order::whereHas('customer', function($query) use ($citizenCard) {
+            $query->where('citizen_card', 'like', $citizenCard);
+        })->paginate(6);
+        
+        return view('orders.index')->with('orders', $ordersByCustomer);
     }
 
     /**
@@ -54,7 +65,12 @@ class OrdersController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $statuses = OrderStatus::all();
+        
+        return view('orders.show', [
+            'order' => $order,
+            'statuses' => $statuses
+        ]);
     }
 
     /**
@@ -75,22 +91,16 @@ class OrdersController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Order $order)
     {
-        $order = Order::findOrfail($id);
-
-        /* $data['status_id'] = $request->input('status_id');
-        if($request->input('is_completed'))
-           $data['delivery_date'] = DB::raw('CURRENT_TIMESTAMP');
- */
         $order->update([
             'status_id' => $request->input('status_id'),
-            'delivery_date' => $request->input('is_completed') ? DB::raw('CURRENT_TIMESTAMP') : null
+            'delivery_date' => $request->status_id == 3 ? DB::raw('CURRENT_TIMESTAMP') : null
         ]);
 
-        return response()->json([
-            "redirectURL" => route('orders.index')
-        ]);
+        session()->flash('success', 'Status updated!');
+
+        return redirect()->route('orders.index');
     }
 
     /**
@@ -101,6 +111,11 @@ class OrdersController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        
+        session()->flash('success', 'Order deleted!');
+        
+        return redirect()->route('orders.index');
+
     }
 }

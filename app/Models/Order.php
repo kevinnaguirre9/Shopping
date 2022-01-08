@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\OrderItems;
 use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -29,9 +30,13 @@ class Order extends Model
         return $this->belongsTo(OrderStatus::class, 'status_id');
     }
 
+    public function order_items() {
+        return $this->hasMany(OrderItems::class, 'order_id');
+    }
+
     public function items() {
         //return $this->hasMany(OrderItems::class, 'order_id');
-        return $this->belongsToMany(Product::class, 'order_items')      //Return all ingredients 
+        return $this->belongsToMany(Product::class, 'order_items')
                     ->withTimestamps();
     }
 

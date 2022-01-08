@@ -1,7 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
+@if (session('success'))
+    <div class="alert alert-success" role="alert">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="container">
+     <div class="col-md-4">
+           <form action="{{ route('orders.search')}}" method="GET">
+               {{-- @csrf --}}
+               <div class="input-group">
+                    <input type="search" placeholder="Citizen customer card" name="citizen_card" class="form-control" style="float:right" required>
+                    <span class="input-group-prepend">
+                         <button type="submit" class="btn btn-outline-primary">Search</button>
+                    </span>
+               </div>
+           </form>
+     </div>
+     <br>
      <div class="row justify-content-center">
           <div class="col-md-12">
              <div class="card">
@@ -34,27 +51,19 @@
                                              <td>{{ $order->delivery_date ?? '-'}}</td>
                                              <td>{{ $order->courier }}</td>
                                              <td>{{ $order->tracking }}</td>
-                                             <td>
-                                                  <select name="status_id" id="status_id" onchange="updateOrderStatus({{ $order->id }}, this.value, {{ $loop->index +1 }});">
-                                                       @foreach($statuses as $status)
-                                                            <option value="{{ $status->id }}" {{  $order->status_id === $status->id ? 'selected' : ''}}>{{ $status->status }}</option>
-                                                       @endforeach
-                                                  </select>
-                                                  <div class="spinner-border spinner-border-sm border-row-{{ $loop->index +1 }}" hidden role="status">
-                                                       <span class="sr-only"></span>
-                                                  </div>                                                  
-                                             </td>
+                                             <td>{{ $order->status->status }}</td>
+                                             
                                              <td><a href="{{ route('orders.show', $order) }}" class="btn btn-warning btn-sm">show</a></td>
                                              <td>
                                                   {!! Form::open(['method' => 'DELETE','route' => ['orders.destroy', $order],'style'=>'display:inline']) !!}
-                                                  {!! Form::submit('delete', ['class' => 'btn btn-danger btn-sm']) !!}
+                                                  {!! Form::submit('delete', ['class' => 'btn btn-danger btn-sm', 'onclik' => "return confirm('Are you sure?')"]) !!}
                                                   {!! Form::close() !!}
                                              </td>
                                         </tr>   
                                    @empty
-                                        {{-- <tr>
-                                             <td>NO MORE DATA</td>
-                                        </tr> --}}
+                                        <tr>
+                                             <td><span>No data available</span></td>
+                                        </tr>
                                    @endforelse
                               </tbody>
                          </table>
@@ -64,7 +73,6 @@
                {{-- @if($users->render()->paginator->currentPage() <= $users->render()->paginator->lastPage()) --}}
                <div class="d-flex">
                     {{ $orders->render() }}
-                    </div>
                </div>
                <div class="card-footer">
                     {{ date('Y-m-d H:i') }}
@@ -73,14 +81,4 @@
          </div>
      </div>
  </div>
- <script>
-      async function updateOrderStatus(order_id, status_id, row_number) {
-          const spinner = document.querySelector(`.border-row-${row_number}`);
-          const is_completed = status_id == "3";
-          spinner.removeAttribute("hidden");
-          const res = await axios.put(`http://localhost:8000/orders/${order_id}`, {status_id, is_completed});
-          //spinner.setAttribute("hidden", "true");
-          window.location.assign(res.data.redirectURL);
-      }
- </script>
 @endsection
