@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+@if (session('success'))
+    <div class="alert alert-success" role="alert">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="container">
      <div class="row justify-content-center">
           <div class="col-md-8">
@@ -27,13 +32,8 @@
                                         <tr>
                                              <td>{{ $loop->index+1 }}</td>
                                              <td>{{ $product->product_name }}</td>
-                                             <td>{{ $product->price }}</td>
+                                             <td>${{ $product->price }}</td>
                                              <td><a href="{{ route('products.edit', $product) }}" class="btn btn-warning btn-sm">edit</a></td>
-                                             <td>
-                                                  {!! Form::open(['method' => 'DELETE','route' => ['products.destroy', $product],'style'=>'display:inline']) !!}
-                                                  {!! Form::submit('delete', ['class' => 'btn btn-danger btn-sm']) !!}
-                                                  {!! Form::close() !!}
-                                             </td>
                                         </tr>   
                                    @empty
                                         {{-- <tr>

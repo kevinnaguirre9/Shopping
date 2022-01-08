@@ -79,7 +79,7 @@ class ProductsController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.edit')->with('product', $product);
     }
 
     /**
@@ -91,7 +91,11 @@ class ProductsController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $product->update($request->only(['product_name', 'price']));
+
+        session()->flash('success', 'Product updated!');
+
+        return redirect()->route('products.index');
     }
 
     /**
@@ -102,6 +106,10 @@ class ProductsController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        /* $product->destroy();
+
+        session()->flash('success', 'Product deleted!');
+        
+        return redirect()->route('products.index'); */
     }
 }

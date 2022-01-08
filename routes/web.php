@@ -12,17 +12,15 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'admin'])->group(function () {
     //Orders routes
-    Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{orderID}', [OrdersController::class, 'show'])->name('orders.show');
-    Route::put('/orders/{orderID}', [OrdersController::class, 'update'])->name('orders.update');
-    Route::delete('/orders/{orderID}', [OrdersController::class, 'destroy'])->name('orders.destroy');
+    Route::get('/orders/search', [OrdersController::class, 'search'])->name('orders.search');
+    Route::resource('/orders', OrdersController::class)->except('edit');
 
     //Products routes
     Route::resource('/products', ProductsController::class);
 });
 
 Auth::routes([
-    /*'register' => false*/
+    'register' => false
 ]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
