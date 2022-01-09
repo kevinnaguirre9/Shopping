@@ -72,13 +72,6 @@
                                     </a-->
                                 @endif
 
-                                @if (Route::has('register'))
-                                    Aún no tienes cuenta?
-                                    <a class="btn btn-link" href="{{ route('register') }}">
-                                        {{ __('Registrate') }}
-                                    </a>
-                            
-                            @endif
                             </div>
                         </div>
                     </form>
