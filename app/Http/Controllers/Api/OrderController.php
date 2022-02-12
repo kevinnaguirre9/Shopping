@@ -49,7 +49,7 @@ class OrderController extends Controller
         $tracking = 'OR' . (hexdec(substr(uniqid(), 0, 9)) + (int) $order->id) . 'EC';  //create random tracking
         $order->tracking = $tracking;
 
-        $productsId = explode(',', $request->input('products'));;
+        $productsId = array_filter(explode(',', $request->input('products')));
         $products = DB::table('products')->whereIn('id', $productsId)->get();
         $totalOrder = 0;
 

@@ -22,6 +22,7 @@ class UserController extends Controller
         if($orders->count() > 0) {
             foreach($orders as $order) {
                 $data[] = [
+                    'id' => $order->id,
                     'order_date' => $order->order_date,
                     'delivery_date' => $order->delivery_date,
                     'courier' => $order->courier,
