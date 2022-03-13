@@ -110,16 +110,15 @@
                          <div class="row">
                               <div class="col">
                                    <label><b>Order details</b></label>
-                                   <textarea class="form-control" readonly>{{ $order->purchase_detail }}</textarea>
+                                   <p class="form-control" readonly>{{ $order->purchase_detail }}</p>
                               </div>
                               <div class="col">
                                    <label><b>Total order price</b></label>
                                    <p class="form-control">${{ $order->total_price }}</p>
                               </div>
                          </div>
-                         <br>
-                         <div class="form-row">
-                              <div class="form-group col-md-3">
+                         <div class="row">
+                              <div class="col">
                                    <label for="status_id"><b>Order status</b></label>
                                    <select name="status_id" id="status_id" class="form-control">
                                         @foreach($statuses as $status)
@@ -127,9 +126,14 @@
                                         @endforeach
                                    </select>
                               </div>
-                              <br>
-                              <div class="form-group col-md-2">
-                                   <input class="btn btn-primary" id="btnShowInvoice" type="button" value="See invoice">
+                              <div class="col">
+                                   <label></label>
+                                   <input class="btn btn-primary form-control" id="btnShowInvoice" type="button" value="See invoice">
+                              </div>
+                              <div class="col">
+                                   <label></label>
+                                   <a type="button" class="btn btn-secondary form-control" href="{{ asset('images/' . $order->invoice_file) }}" download="invoice">Download invoice
+                                   </a>
                               </div>
                          </div>
 
