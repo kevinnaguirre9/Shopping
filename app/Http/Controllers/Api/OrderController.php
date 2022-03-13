@@ -77,7 +77,20 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+        $order = Order::findOrFail($id);
+
+        return [
+            'id' => $order->id,
+            'order_date' => $order->order_date,
+            'delivery_date' => $order->delivery_date,
+            'shipper' => $order->shipper,
+            'consignee' => $order->consignee,
+            'carrier' => $order->carrier,
+            'tracking' => $order->tracking,
+            'status' => $order->status->status,
+            'total_price' => $order->total_price,
+            'purchase_detail' => $order->purchase_detail
+        ];
     }
 
     /**
