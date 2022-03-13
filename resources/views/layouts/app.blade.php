@@ -38,9 +38,6 @@
                                 <li class="nav-item">
                                     <a class="nav-link {{ Route::is('orders.index') ? 'active' : ''}}" href="{{ route('orders.index') }}">Orders</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ Route::is('products.index') ? 'active' : ''}}" href="{{ route('products.index') }}">Products</a>
-                                </li>
                             </ul>
                         @endif
                     @endauth

@@ -35,7 +35,8 @@
                                         <th>Customer</th>
                                         <th>Order Date</th>
                                         <th>Delivery Date</th>
-                                        <th>Courier</th>
+                                        <th>Shipper</th>
+                                        <th>Carrier</th>
                                         <th>Tracking</th>
                                         <th>Status</th>
                                         <th scope="col" width="1%" colspan="3"></th>
@@ -49,6 +50,7 @@
                                              <td>{{ $order->customer->first_name }} {{ $order->customer->last_name }}</td>
                                              <td>{{ $order->order_date }}</td>
                                              <td>{{ $order->delivery_date ?? '-'}}</td>
+                                             <td>{{ $order->shipper }}</td>
                                              <td>{{ $order->courier }}</td>
                                              <td>{{ $order->tracking }}</td>
                                              <td>{{ $order->status->status }}</td>

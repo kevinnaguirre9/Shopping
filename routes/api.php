@@ -19,5 +19,5 @@ Route::middleware('auth:api')->group(function () {
 
     //Orders routes
     Route::get('/user/orders', [UserController::class, 'getOrders']);
-    Route::post('/orders', [OrderController::class, 'store']);
+    Route::post('/order', [OrderController::class, 'store']);
 });

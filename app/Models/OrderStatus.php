@@ -13,6 +13,8 @@ class OrderStatus extends Model
 
     protected $primaryKey = 'id'; 
 
+    protected $fillable = ['status'];
+
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
 }

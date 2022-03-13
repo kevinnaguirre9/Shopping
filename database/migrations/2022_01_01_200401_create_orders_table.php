@@ -17,12 +17,15 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->timestamp('order_date')->useCurrent();
             $table->timestamp('delivery_date')->nullable();
-            $table->string('courier', 100);
+            $table->string('shipper', 100);
+            $table->string('consignee', 100);
+            $table->string('carrier', 100);
             $table->string('tracking', 20);
             $table->foreignId('status_id')->constrained('order_statuses');
             $table->decimal('total_price', 7, 2);
-            $table->text('remarks');
+            $table->text('purchase_detail');
             $table->foreignId('customer_id')->constrained('users');
+            $table->string('invoice_file');
             $table->timestamps();
             $table->softDeletes();
         });
