@@ -9,14 +9,25 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function show() {
-        return Auth::guard('api')->user();
+    /**
+     * Get authenticated user information
+     */
+    public function show() 
+    {
+        $userId = Auth::guard('api')->id();
+        $User = User::findOrFail($userId);
+
+        return $User;
     }
 
-    public function getOrders() {
-        $userID = Auth::guard('api')->id();
-        $user = User::findOrFail($userID);
-        $orders = $user->orders;
+    /**
+     * Get authenticated user orders
+     */
+    public function getOrders() 
+    {
+        $orders = Auth::guard('api')
+                    ->user()
+                    ->orders;
         $data = [];
         
         if($orders->count() > 0) {
@@ -25,12 +36,13 @@ class UserController extends Controller
                     'id' => $order->id,
                     'order_date' => $order->order_date,
                     'delivery_date' => $order->delivery_date,
-                    'courier' => $order->courier,
-                    'traking' => $order->tracking,
-                    'total_price' => $order->total_price,
-                    'remarks' => $order->remarks,
+                    'shipper' => $order->shipper,
+                    'consignee' => $order->consignee,
+                    'carrier' => $order->carrier,
+                    'tracking' => $order->tracking,
                     'status' => $order->status->status,
-                    'items' => $order->items
+                    'total_price' => $order->total_price,
+                    'purchase_detail' => $order->purchase_detail
                 ];
             }
         }

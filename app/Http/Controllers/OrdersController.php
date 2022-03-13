@@ -93,9 +93,15 @@ class OrdersController extends Controller
      */
     public function update(Request $request, Order $order)
     {
+        $deliveryStatusId = OrderStatus::firstwhere(
+            'abbreviation', 'ENT'
+        )->id;
+
         $order->update([
             'status_id' => $request->input('status_id'),
-            'delivery_date' => $request->status_id == 3 ? DB::raw('CURRENT_TIMESTAMP') : null
+            'delivery_date' => $request->status_id == $deliveryStatusId 
+                                    ? DB::raw('CURRENT_TIMESTAMP') 
+                                    : null,
         ]);
 
         session()->flash('success', 'Status updated!');

@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('order_date')->useCurrent();
+            $table->date('order_date')->useCurrent();
             $table->timestamp('delivery_date')->nullable();
             $table->string('shipper', 100);
             $table->string('consignee', 100);

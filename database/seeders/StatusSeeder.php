@@ -15,21 +15,47 @@ class StatusSeeder extends Seeder
     public function run()
     {
         $statuses = [
-            'Por confirmar', 
-            'Aceptado', 
-            'Cancelado', 
-            'Enviado', 
-            'Entregado', 
-            'Llegada a Ecuador', 
-            'En Oficina', 
-            'En Aduana'
+            [
+                'status'        => 'Por confirmar',
+                'abbreviation'  => 'PC'
+            ],
+            [
+                'status'        => 'Aceptado',
+                'abbreviation'  => 'AA'
+            ],
+            [
+                'status'        => 'Cancelado',
+                'abbreviation'  => 'CC'
+            ],
+            [
+                'status'        => 'Enviado',
+                'abbreviation'  => 'ENV'
+            ],
+            [
+                'status'        => 'Entregado',
+                'abbreviation'  => 'ENT'
+            ],
+            [
+                'status'        => 'Llegada a Ecuador',
+                'abbreviation'  => 'LLE'
+            ], 
+            [
+                'status'        => 'En Oficina',
+                'abbreviation'  => 'EOF'
+            ], 
+            [
+                'status'        => 'Llegada a Ecuador',
+                'abbreviation'  => 'LLE'
+            ], 
+            [
+                'status'        => 'En Aduana',
+                'abbreviation'  => 'EAD'
+            ],
         ];
 
         foreach($statuses as $status) 
         {
-            OrderStatus::create([
-                'status' => $status
-            ]);
+            OrderStatus::create($status);
         }
     }
 }

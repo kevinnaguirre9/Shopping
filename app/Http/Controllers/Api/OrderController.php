@@ -58,7 +58,8 @@ class OrderController extends Controller
         $invoiceFileName = time() . '-' . $file->getClientOriginalName();
 
         //Store invoice file
-        $test = $request->invoice_file->move(public_path('images'), $invoiceFileName);
+        $request->invoice_file->move(public_path('images'), $invoiceFileName);
+        
         $order->invoice_file = $invoiceFileName;
         $order->save();
 

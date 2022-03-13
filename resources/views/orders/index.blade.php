@@ -1,11 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-@if (session('success'))
-    <div class="alert alert-success" role="alert">
-        {{ session('success') }}
-    </div>
-@endif
 <div class="container">
      <div class="col-md-4">
            <form action="{{ route('orders.search')}}" method="GET">
@@ -28,47 +23,47 @@
  
                <div class="card-body">
                     <div class="table-responsive">
-                         <table class="table table-hover">
-                              <thead>
-                                   <tr>
-                                        <th>#</th>
-                                        <th>Customer</th>
-                                        <th>Order Date</th>
-                                        <th>Delivery Date</th>
-                                        <th>Shipper</th>
-                                        <th>Carrier</th>
-                                        <th>Tracking</th>
-                                        <th>Status</th>
-                                        <th scope="col" width="1%" colspan="3"></th>
-                                        <th scope="col" width="1%" colspan="3"></th>
-                                   </tr>
-                              </thead>
-                              <tbody>
-                                   @forelse($orders as $order)
+                         @if(count($orders) > 0)
+                              <table class="table table-hover">
+                                   <thead>
                                         <tr>
-                                             <td>{{ $loop->index +1 }}</td>
-                                             <td>{{ $order->customer->first_name }} {{ $order->customer->last_name }}</td>
-                                             <td>{{ $order->order_date }}</td>
-                                             <td>{{ $order->delivery_date ?? '-'}}</td>
-                                             <td>{{ $order->shipper }}</td>
-                                             <td>{{ $order->courier }}</td>
-                                             <td>{{ $order->tracking }}</td>
-                                             <td>{{ $order->status->status }}</td>
-                                             
-                                             <td><a href="{{ route('orders.show', $order) }}" class="btn btn-warning btn-sm">show</a></td>
-                                             <td>
-                                                  {!! Form::open(['method' => 'DELETE','route' => ['orders.destroy', $order],'style'=>'display:inline']) !!}
-                                                  {!! Form::submit('delete', ['class' => 'btn btn-danger btn-sm', 'onclik' => "return confirm('Are you sure?')"]) !!}
-                                                  {!! Form::close() !!}
-                                             </td>
-                                        </tr>   
-                                   @empty
-                                        <tr>
-                                             <td><span>No data available</span></td>
+                                             <th>#</th>
+                                             <th>Customer</th>
+                                             <th>Order Date</th>
+                                             <th>Delivery Date</th>
+                                             <th>Shipper</th>
+                                             <th>Carrier</th>
+                                             <th>Tracking</th>
+                                             <th>Status</th>
+                                             <th scope="col" width="1%" colspan="3"></th>
+                                             <th scope="col" width="1%" colspan="3"></th>
                                         </tr>
-                                   @endforelse
-                              </tbody>
-                         </table>
+                                   </thead>
+                                   <tbody>
+                                        @foreach($orders as $order)
+                                             <tr>
+                                                  <td>{{ $loop->index +1 }}</td>
+                                                  <td>{{ $order->customer->first_name }} {{ $order->customer->last_name }}</td>
+                                                  <td>{{ $order->order_date }}</td>
+                                                  <td>{{ $order->delivery_date ?? '-'}}</td>
+                                                  <td>{{ $order->shipper }}</td>
+                                                  <td>{{ $order->carrier }}</td>
+                                                  <td>{{ $order->tracking }}</td>
+                                                  <td>{{ $order->status->status }}</td>
+                                                  
+                                                  <td><a href="{{ route('orders.show', $order) }}" class="btn btn-warning btn-sm">show</a></td>
+                                                  <td>
+                                                       {!! Form::open(['method' => 'DELETE','route' => ['orders.destroy', $order],'style'=>'display:inline']) !!}
+                                                       {!! Form::submit('delete', ['class' => 'btn btn-danger btn-sm', 'onclik' => "return confirm('Are you sure?')"]) !!}
+                                                       {!! Form::close() !!}
+                                                  </td>
+                                             </tr>
+                                        @endforeach
+                                   </tbody>
+                              </table>
+                         @else
+                              <h5>No orders found</h5>
+                         @endif
                     </div> 
                </div> 
      

@@ -12,8 +12,6 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes, CascadeSoftDeletes;
 
-    protected $cascadeDeletes = ['order_items'];
-
     protected $table = 'orders';
 
     protected $fillable = [
@@ -27,7 +25,7 @@ class Order extends Model
         'total_price', 
         'purchase_detail', 
         'customer_id',
-        'invoice_file_path',
+        'invoice_file',
     ];
 
     protected $primaryKey = 'id';
