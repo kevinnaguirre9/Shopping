@@ -20,4 +20,5 @@ Route::middleware('auth:api')->group(function ()
 
     Route::post('/order', [OrderController::class, 'store']);
     Route::get('/order/{orderId}', [OrderController::class, 'show']);
+    Route::put('/order/{orderId}', [OrderController::class, 'update']);
 });

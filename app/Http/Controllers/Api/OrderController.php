@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderStatus;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -113,7 +114,29 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $toBeConfirmedStatusId = OrderStatus::firstwhere(
+            'abbreviation', 'PC'
+        )->id;
+
+        $statusId = $request->input('status_id');
+
+        $order = Order::findOrFail($id);
+
+        if($order->status_id != $toBeConfirmedStatusId) 
+        {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Order status cannot be cancelled'
+            ]);
+        }
+
+        $order->update(['status_id' => $statusId]);
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Order status updated succesfully'
+        ]);
+
     }
 
     /**
