@@ -39,7 +39,6 @@ class User extends Authenticatable
         'is_admin',
         'remember_token',
         'email_verified_at',
-        'created_at',
         'updated_at',
         'deleted_at'
     ];
@@ -51,9 +50,12 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'created_at' => 'date:Y-m-d',
     ];
 
     public function orders() {
-        return $this->hasMany(Order::class, 'customer_id');
+        return $this
+            ->hasMany(Order::class, 'customer_id')
+            ->orderBy('order_date', 'DESC');
     }
 }
