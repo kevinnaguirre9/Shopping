@@ -30,9 +30,7 @@ class LoginRequest extends FormRequest
             'email' => 'required|unique:users|max:50',
             'password' => 'required|min:6|max:255',
             'first_name' => 'required|max:100',
-            'last_name' => 'required|max:100',
-            'phone_number' => 'required|unique:users|max:10',
-            'address' =>'required|max:150',
+            'last_name' => 'required|max:100'
        ];
     }
 

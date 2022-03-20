@@ -14,9 +14,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     //Orders routes
     Route::get('/orders/search', [OrdersController::class, 'search'])->name('orders.search');
     Route::resource('/orders', OrdersController::class)->except('edit');
-
-    //Products routes
-    Route::resource('/products', ProductsController::class);
+    
 });
 
 Auth::routes([

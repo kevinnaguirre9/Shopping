@@ -12,11 +12,21 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes, CascadeSoftDeletes;
 
-    protected $cascadeDeletes = ['order_items'];
-
     protected $table = 'orders';
 
-    protected $fillable = ['delivery_date', 'courier', 'tracking', 'status_id', 'total_price', 'remarks', 'customer_id'];
+    protected $fillable = [
+        'order_date',
+        'delivery_date', 
+        'shipper', 
+        'consignee', 
+        'carrier', 
+        'tracking', 
+        'status_id', 
+        'total_price', 
+        'purchase_detail', 
+        'customer_id',
+        'invoice_file',
+    ];
 
     protected $primaryKey = 'id';
 
@@ -28,16 +38,6 @@ class Order extends Model
 
     public function status() {
         return $this->belongsTo(OrderStatus::class, 'status_id');
-    }
-
-    public function order_items() {
-        return $this->hasMany(OrderItems::class, 'order_id');
-    }
-
-    public function items() {
-        //return $this->hasMany(OrderItems::class, 'order_id');
-        return $this->belongsToMany(Product::class, 'order_items')
-                    ->withTimestamps();
     }
 
 }

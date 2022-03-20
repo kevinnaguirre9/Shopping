@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderStatus;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -41,26 +42,27 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $order = Order::make([
-            'courier' => $request->input('courier'),
-            'remarks' => $request->input('remarks'),
+            'order_date' => $request->input('order_date'),
+            'shipper' => $request->input('shipper'),
+            'consignee' => $request->input('consignee'),
+            'carrier' => $request->input('carrier'),
             'customer_id' => Auth::guard('api')->id(),
-            'status_id' => 1
+            'total_price' =>  $request->input('total_price'),
+            'status_id' => 1,
+            'purchase_detail' => $request->input('purchase_detail'),
         ]);
+
         $tracking = 'OR' . (hexdec(substr(uniqid(), 0, 9)) + (int) $order->id) . 'EC';  //create random tracking
         $order->tracking = $tracking;
 
-        $productsId = array_filter(explode(',', $request->input('products')));
-        $products = DB::table('products')->whereIn('id', $productsId)->get();
-        $totalOrder = 0;
+        $file = $request->file('invoice_file');
+        $invoiceFileName = time() . '-' . $file->getClientOriginalName();
 
-        foreach ($products as $product) {
-            $totalOrder += $product->price;
-        }
-
-        $order->total_price = $totalOrder;
-        $order->save();     //save order
-
-        $order->items()->attach($productsId);   //save products
+        //Store invoice file
+        $request->invoice_file->move(public_path('images'), $invoiceFileName);
+        
+        $order->invoice_file = $invoiceFileName;
+        $order->save();
 
         return [
             'sucess' => true,
@@ -76,7 +78,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+       //
     }
 
     /**
@@ -99,7 +101,31 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $toBeConfirmedStatusId = OrderStatus::firstwhere(
+            'abbreviation', 'PC'
+        )->id;
+
+        $canceledStatusId = OrderStatus::firstwhere(
+            'abbreviation', 'CC'
+        )->id;
+
+        $order = Order::findOrFail($id);
+
+        if($order->status_id != $toBeConfirmedStatusId) 
+        {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Order status cannot be cancelled'
+            ]);
+        }
+
+        $order->update(['status_id' => $canceledStatusId]);
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Order status updated succesfully'
+        ]);
+
     }
 
     /**

@@ -12,28 +12,35 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login(Request $request) {
+    /**
+     * @param Request $request
+     * 
+     * @return array
+     */
+    public function login(Request $request) 
+    {
         $credentials = $request->only('email', 'password');
         
-        if(Auth::guard('api')->attempt($credentials)) {
-            $user = Auth::guard('api')->user();
-            
-            $jwt = JwtAuth::generateToken($user);
-            
-            return [
-                'success' => true,
-                'data' => ['user' => $user, 'token' => $jwt]
-            ];
-        } else {
-            $message = "Invalid Credentials";
-
+        if(!Auth::guard('api')->attempt($credentials)) 
+        {
             return [
                 'success' => false,
-                'message' => $message
+                'message' => "Invalid Credentials"
             ];
         }
+
+        $user = Auth::guard('api')->user();
+        $jwt = JwtAuth::generateToken($user);
+        
+        return [
+            'success' => true,
+            'data' => ['user' => $user, 'token' => $jwt]
+        ];
     }
 
+     /**
+     * @return array
+     */
     public function logout() {
         Auth::guard('api')->logout();
 
@@ -42,13 +49,16 @@ class AuthController extends Controller
         ];
     }
 
-    public function signup(LoginRequest $request) {
+     /**
+     * @param LoginRequest $request
+     * 
+     */
+    public function signup(LoginRequest $request) 
+    {
         $user = User::create([
             'citizen_card' => $request->input('citizen_card'),
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
-            'phone_number' => $request->input('phone_number'),
-            'address' => $request->input('address'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password'))
         ]);

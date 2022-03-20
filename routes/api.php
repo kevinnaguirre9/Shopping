@@ -10,14 +10,14 @@ use App\Http\Controllers\Api\ProductController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/signup', [AuthController::class, 'signup']);
 
-Route::middleware('auth:api')->group(function () {
-    Route::get('/user',[UserController::class, 'show']);
+Route::middleware('auth:api')->group(function () 
+{
+    Route::get('/user', [UserController::class, 'show']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    //Product routes
-    Route::get('/products', [ProductController::class, 'index']);
+    Route::get('/order', [UserController::class, 'getOrders']);
 
-    //Orders routes
-    Route::get('/user/orders', [UserController::class, 'getOrders']);
-    Route::post('/orders', [OrderController::class, 'store']);
+    Route::post('/order', [OrderController::class, 'store']);
+    Route::put('/order/{orderId}', [OrderController::class, 'update']);
 });

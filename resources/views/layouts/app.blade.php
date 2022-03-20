@@ -18,6 +18,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    @yield('styles')
 </head>
 <body>
     <div id="app">
@@ -37,9 +39,6 @@
                             <ul class="navbar-nav me-auto">
                                 <li class="nav-item">
                                     <a class="nav-link {{ Route::is('orders.index') ? 'active' : ''}}" href="{{ route('orders.index') }}">Orders</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link {{ Route::is('products.index') ? 'active' : ''}}" href="{{ route('products.index') }}">Products</a>
                                 </li>
                             </ul>
                         @endif
@@ -87,6 +86,8 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        @yield('scripts')
     </div>
 </body>
 </html>
