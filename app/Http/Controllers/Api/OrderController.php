@@ -78,20 +78,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = Order::findOrFail($id);
-
-        return [
-            'id' => $order->id,
-            'order_date' => $order->order_date,
-            'delivery_date' => $order->delivery_date,
-            'shipper' => $order->shipper,
-            'consignee' => $order->consignee,
-            'carrier' => $order->carrier,
-            'tracking' => $order->tracking,
-            'status' => $order->status->status,
-            'total_price' => $order->total_price,
-            'purchase_detail' => $order->purchase_detail
-        ];
+       //
     }
 
     /**
@@ -118,7 +105,9 @@ class OrderController extends Controller
             'abbreviation', 'PC'
         )->id;
 
-        $statusId = $request->input('status_id');
+        $canceledStatusId = OrderStatus::firstwhere(
+            'abbreviation', 'CC'
+        )->id;
 
         $order = Order::findOrFail($id);
 
@@ -130,7 +119,7 @@ class OrderController extends Controller
             ]);
         }
 
-        $order->update(['status_id' => $statusId]);
+        $order->update(['status_id' => $canceledStatusId]);
 
         return response()->json([
             'status'  => true,
