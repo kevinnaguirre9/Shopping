@@ -69,7 +69,7 @@
      
                {{-- @if($users->render()->paginator->currentPage() <= $users->render()->paginator->lastPage()) --}}
                <div class="d-flex">
-                    {{ $orders->render() }}
+                    {{ $orders->appends(request()->query())->links() }}
                </div>
                <div class="card-footer">
                     {{ date('Y-m-d H:i') }}
